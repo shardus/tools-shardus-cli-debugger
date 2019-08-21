@@ -1,3 +1,3 @@
 function combine () {}
 
-exports.combine = combine
+module.exports = combine

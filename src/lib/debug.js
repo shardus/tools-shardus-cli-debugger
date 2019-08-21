@@ -3,15 +3,11 @@ const axios = require('axios')
 const tar = require('tar')
 
 async function debug (instanceUrl, instanceDir) {
-  // Get nodelist from instanceUrl
-  const { data: { nodelist } } = await axios('http://' + instanceUrl + '/nodelist')
-
-  // Make an instances/ dir
+  // Ensure that the instanceDir exists
   await ensureExists(instanceDir)
 
   // Stream and extract tar.gz debug files from each node into instances dir
-  const debugFileUrls = nodelist.map(node => `http://${node.externalIp}:${node.externalPort}/debug`)
-  await streamExtractFiles(debugFileUrls, instanceDir)
+  await streamExtractFile(`http://${instanceUrl}/debug`, instanceDir)
 }
 
 // From: https://stackoverflow.com/a/21196961
@@ -31,10 +27,6 @@ async function ensureExists (dir) {
   })
 }
 
-async function streamExtractFiles (urls, savePath) {
-  await Promise.all(urls.map(url => streamExtractFile(url, savePath)))
-}
-
 function streamExtractFile (url, savePath) {
   return new Promise((resolve, reject) => {
     axios({
@@ -50,4 +42,4 @@ function streamExtractFile (url, savePath) {
   })
 }
 
-exports.debug = debug
+module.exports = debug

@@ -1,3 +1,3 @@
 function collect () {}
 
-exports.collect = collect
+module.exports = collect

@@ -1,13 +1,13 @@
 const fs = require('fs')
-const axios = require('axios')
+const got = require('got')
 const tar = require('tar')
 
-async function debug (instanceUrl, instanceDir) {
+async function debug (instanceUrl, instanceDir, progressFn) {
   // Ensure that the instanceDir exists
   await ensureExists(instanceDir)
 
   // Stream and extract tar.gz debug files from each node into instances dir
-  await streamExtractFile(`http://${instanceUrl}/debug`, instanceDir)
+  await streamExtractFile(`http://${instanceUrl}/debug`, instanceDir, progressFn)
 }
 
 // From: https://stackoverflow.com/a/21196961
@@ -27,18 +27,17 @@ async function ensureExists (dir) {
   })
 }
 
-function streamExtractFile (url, savePath) {
+function streamExtractFile (url, savePath, progressFn) {
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'get',
-      url,
-      responseType: 'stream'
-    }).then(response => {
-      const out = tar.extract({ cwd: savePath })
-      response.data.pipe(out)
-      out.on('close', resolve)
-      out.on('error', reject)
-    }).catch(reject)
+    const download = got.stream(url, { decompress: false })
+    download.on('error', reject)
+    download.on('downloadProgress', progressFn)
+
+    const out = tar.extract({ cwd: savePath })
+    out.on('error', reject)
+    out.on('close', resolve)
+
+    download.pipe(out)
   })
 }
 

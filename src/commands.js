@@ -1,16 +1,16 @@
 const actions = require('./actions')
 
 const register = {
-  debug (prog, namespace) {
+  get (prog, namespace) {
     prog
-      .command(`${namespace ? namespace + ' ' : ''}debug`, 'Download debug data for the given instance')
+      .command(`${namespace ? namespace + ' ' : ''}get`, 'Get debug data for the given instance')
       .argument('<instanceUrl>', 'URL of the instance to download debug data from')
       .argument('[instanceDir]', 'Path to unpack the instances debug data into. Unpacks into current path if not given')
-      .action(actions.debug)
+      .action(actions.get)
   },
   collect (prog, namespace) {
     prog
-      .command(`${namespace ? namespace + ' ' : ''}collect`, 'Download debug data of all network instances')
+      .command(`${namespace ? namespace + ' ' : ''}collect`, 'Collect debug data of all network instances')
       .argument('<instanceUrl>', 'URL of an instance in the network to download debug info from')
       .argument('[networkDir]', 'Path to put all network instances debug info into. Uses current path if not given')
       .action(actions.collect)

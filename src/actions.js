@@ -1,15 +1,11 @@
-const path = require('path')
 const lib = require('./lib')
 
-async function debug (args, options, logger) {
-  const url = args['instanceUrl']
-  const dir = args['instanceDir'] || process.cwd()
+async function get (args, options, logger) {
   try {
-    await lib.debug(url, dir, ({ transferred }) => {
+    await lib.get(args['instanceUrl'], args['instanceDir'] || process.cwd(), ({ url, savePath, transferred }) => {
       process.stdout.clearLine()
       process.stdout.cursorTo(0)
-      const dirpath = path.normalize(path.relative(process.cwd(), dir))
-      process.stdout.write(`Downloading from ${url} into ${dirpath} (${transferred} B)`)
+      process.stdout.write(`Downloading from ${url} into ${savePath} (${transferred} B)`)
     })
     process.stdout.write('\n')
   } catch (e) {
@@ -19,7 +15,12 @@ async function debug (args, options, logger) {
 
 async function collect (args, options, logger) {
   try {
-    await lib.collect(args['instanceUrl'], args['networkDir'] || process.cwd())
+    await lib.collect(args['instanceUrl'], args['networkDir'] || process.cwd(), ({ currentNode, totalNodes, url, savePath, transferred }) => {
+      process.stdout.clearLine()
+      process.stdout.cursorTo(0)
+      process.stdout.write(`(${currentNode}/${totalNodes}) Downloading from ${url} into ${savePath} (${transferred} B)`)
+    })
+    process.stdout.write('\n')
   } catch (e) {
     logger.error('Error: ' + e.message)
   }
@@ -33,6 +34,6 @@ function combine (args, options, logger) {
   }
 }
 
-exports.debug = debug
+exports.get = get
 exports.collect = collect
 exports.combine = combine

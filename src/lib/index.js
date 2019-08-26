@@ -1,5 +1,5 @@
 module.exports = {
-  debug: require('./debug'),
+  get: require('./get'),
   collect: require('./collect'),
   combine: require('./combine')
 }

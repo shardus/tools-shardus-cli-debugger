@@ -19,7 +19,12 @@ async function collect (instanceUrl, networkDir, progressFn) {
     const debugUrl = new URL('/debug', `http://${node.externalIp}:${node.externalPort}`)
     const savePath = path.join(networkDir, `debug-${debugUrl.hostname}-${debugUrl.port}`)
     await ensureExists(savePath)
-    await streamExtractFile(debugUrl.toString(), savePath, progress => progressFn({ currentNode: index + 1, totalNodes: nodelist.length, ...progress }))
+    try {
+      await streamExtractFile(debugUrl.toString(), savePath, progress => progressFn({ currentNode: index + 1, totalNodes: nodelist.length, ...progress }))
+    } catch (err) {
+      console.log(err)
+      continue
+    }
   }
 }
 

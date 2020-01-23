@@ -22,7 +22,7 @@ async function collect (instanceUrl, networkDir, progressFn) {
     try {
       await streamExtractFile(debugUrl.toString(), savePath, progress => progressFn({ currentNode: index + 1, totalNodes: nodelist.length, ...progress }))
     } catch (err) {
-      console.log(err)
+      console.log('ERR: ', `http://${node.externalIp}:${node.externalPort} Connection refused`)
       continue
     }
   }

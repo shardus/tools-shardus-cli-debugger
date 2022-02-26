@@ -1,9 +1,10 @@
 {
-  "name": "shardus-debug",
+  "name": "@shardus/debug-tool",
   "version": "1.0.0",
   "description": "Shardus application debugging tools.",
   "main": "index.js",
   "scripts": {
+    "release": "np --no-tests --no-yarn",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
@@ -16,7 +17,11 @@
     "got": "^9.6.0",
     "tar": "^4.4.10"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
+    "np": "^7.6.0",
     "standard": "^13.1.0"
   }
 }

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "release": "np --no-tests --no-yarn",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "format-check": "prettier --check '**.js'"
   },
   "bin": {
     "shardus-debug": "./bin/index.js"
@@ -15,13 +17,17 @@
   "dependencies": {
     "caporal": "^1.3.0",
     "got": "^9.6.0",
-    "tar": "^4.4.10"
+    "tar": "^4.4.10",
+    "eslint": "^8.43.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
     "np": "^7.6.0",
-    "standard": "^13.1.0"
+    "standard": "^13.1.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-security": "^1.7.1",
+    "prettier": "^2.7.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@shardus/debug-tool",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Shardus application debugging tools.",
   "main": "index.js",
   "scripts": {
